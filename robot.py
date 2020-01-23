@@ -15,7 +15,7 @@ try:
   motors = Motors()
   motors.setup_motors()
 
-  base_pwm = 10;
+  base_pwm = 13
 
   for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
     # cv2.imwrite("/tmp/raw.jpg", frame.array)
@@ -27,12 +27,19 @@ try:
     if M["m00"] > 0:
         cx = int(M["m10"] / M["m00"])
         value = 640/2 - cx
+        print(value)
         if value > 0:
-            motors.move_right_motor(True, base_pwm + 4)
-            motors.move_left_motor(True, base_pwm - 2)
+            motors.move_right_motor(True, base_pwm + 2)
+            motors.move_left_motor(True, 0)#base_pwm - 2)
+            if value > 100:
+                 motors.move_right_motor(True, base_pwm)
+                 motors.move_left_motor(False, base_pwm)
         else:
-            motors.move_right_motor(True, base_pwm - 2)
-            motors.move_left_motor(True, base_pwm + 4)
+            motors.move_right_motor(True, 0)#base_pwm - 2)
+            motors.move_left_motor(True, base_pwm + 2)
+            if value < -100:
+                 motors.move_right_motor(False, base_pwm)
+                 motors.move_left_motor(True, base_pwm)
 
     # cv2.imwrite("/tmp/thresholded.jpg", tresh)
     rawCapture.truncate(0)
