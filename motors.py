@@ -10,6 +10,7 @@ class Motors:
     PWM2 = 19
 
     def setup_motors(self):
+        wiringpi.wiringPiSetupGpio()
         wiringpi.pinMode(self.A1, 1)
         wiringpi.pinMode(self.A2, 1)
         wiringpi.pinMode(self.B1, 1)
@@ -44,7 +45,6 @@ class Motors:
             wiringpi.softPwmWrite(self.PWM2, pwm)
 
 if (__name__ == '__main__'):
-    wiringpi.wiringPiSetupGpio()
     img = cv2.imread('robot.jpg')
     cv2.imshow('Robot', img)
 
